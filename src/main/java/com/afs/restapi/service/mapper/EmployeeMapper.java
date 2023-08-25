@@ -12,7 +12,7 @@ public class EmployeeMapper {
 
     public static Employee toEntity(EmployeeRequest employeeRequest) {
         Employee employee = new Employee();
-        BeanUtils.copyProperties(employeeRequest, employee); // will copy from employee to employee request
+        BeanUtils.copyProperties(employeeRequest, employee);
         return employee;
     }
 
