@@ -7,6 +7,10 @@ public class EmployeeRequest {
     private Integer salary;
     private Long companyId;
 
+    public EmployeeRequest(){
+
+    }
+
     public EmployeeRequest(String name, Integer age, String gender, Integer salary, Long companyId) {
         this.name = name;
         this.age = age;
