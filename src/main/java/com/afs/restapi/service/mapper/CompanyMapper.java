@@ -5,8 +5,10 @@ import com.afs.restapi.service.dto.CompanyRequest;
 import org.springframework.beans.BeanUtils;
 
 public class CompanyMapper {
-    public static Company toEntity(CompanyRequest companyRequest) {
-        Company company = new Company();
+    public static Company toEntity(Company company, CompanyRequest companyRequest) {
+        if (company == null) {
+            company = new Company();
+        }
         BeanUtils.copyProperties(companyRequest, company);
         return company;
     }
