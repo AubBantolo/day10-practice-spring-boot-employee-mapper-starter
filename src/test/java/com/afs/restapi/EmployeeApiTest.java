@@ -35,8 +35,6 @@ class EmployeeApiTest {
     }
     @Test
     void should_find_employees() throws Exception {
-        //Employee bob = employeeRepository.save(getEmployeeBob());
-
         EmployeeRequest employeeRequest = new EmployeeRequest("Alice", 18, "Female", 2000, null);
         Employee employee = employeeRepository.save(new Employee(null,
                 employeeRequest.getName(),
@@ -57,9 +55,6 @@ class EmployeeApiTest {
     }
     @Test
     void should_find_employee_by_gender() throws Exception {
-//        Employee bob = employeeRepository.save(getEmployeeBob());
-//        Employee susan = employeeRepository.save(getEmployeeSusan());
-
         EmployeeRequest employeeRequest1 = new EmployeeRequest("Alice", 18, "Female", 2000, null);
         Employee alice = employeeRepository.save(new Employee(null,
                 employeeRequest1.getName(),
@@ -135,8 +130,6 @@ class EmployeeApiTest {
 
     @Test
     void should_find_employee_by_id() throws Exception {
-        //Employee employee = employeeRepository.save(getEmployeeBob());
-
         EmployeeRequest employeeRequest = new EmployeeRequest("Alice", 18, "Female", 2000, null);
         Employee alice = employeeRepository.save(new Employee(null,
                 employeeRequest.getName(),
@@ -157,10 +150,6 @@ class EmployeeApiTest {
 
     @Test
     void should_find_employees_by_page() throws Exception {
-//        Employee bob = employeeRepository.save(getEmployeeBob());
-//        Employee susan = employeeRepository.save(getEmployeeSusan());
-//        Employee lily  = employeeRepository.save(getEmployeeLily());
-
         EmployeeRequest employeeRequest = new EmployeeRequest("Alice", 18, "Female", 2000, null);
         Employee alice = employeeRepository.save(new Employee(null,
                 employeeRequest.getName(),
@@ -212,32 +201,5 @@ class EmployeeApiTest {
                 .andExpect(MockMvcResultMatchers.status().is(204));
 
         assertTrue(employeeRepository.findById(1L).isEmpty());
-    }
-
-    private static Employee getEmployeeBob() {
-        Employee employee = new Employee();
-        employee.setName("Bob");
-        employee.setAge(22);
-        employee.setGender("Male");
-        employee.setSalary(10000);
-        return employee;
-    }
-
-    private static Employee getEmployeeSusan() {
-        Employee employee = new Employee();
-        employee.setName("Susan");
-        employee.setAge(23);
-        employee.setGender("Female");
-        employee.setSalary(11000);
-        return employee;
-    }
-
-    private static Employee getEmployeeLily() {
-        Employee employee = new Employee();
-        employee.setName("Lily");
-        employee.setAge(24);
-        employee.setGender("Female");
-        employee.setSalary(12000);
-        return employee;
     }
 }
