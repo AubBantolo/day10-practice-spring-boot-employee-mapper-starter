@@ -57,17 +57,41 @@ class EmployeeApiTest {
     }
     @Test
     void should_find_employee_by_gender() throws Exception {
-        Employee bob = employeeRepository.save(getEmployeeBob());
-        Employee susan = employeeRepository.save(getEmployeeSusan());
+//        Employee bob = employeeRepository.save(getEmployeeBob());
+//        Employee susan = employeeRepository.save(getEmployeeSusan());
 
-        mockMvc.perform(get("/employees?gender={0}", "Male"))
+        EmployeeRequest employeeRequest1 = new EmployeeRequest("Alice", 18, "Female", 2000, null);
+        Employee alice = employeeRepository.save(new Employee(null,
+                employeeRequest1.getName(),
+                employeeRequest1.getAge(),
+                employeeRequest1.getGender(),
+                employeeRequest1.getSalary(),
+                null));
+        employeeRepository.save(alice);
+
+
+        EmployeeRequest employeeRequest2 = new EmployeeRequest("Susan", 18, "Female", 2000, null);
+        Employee susan = employeeRepository.save(new Employee(null,
+                employeeRequest2.getName(),
+                employeeRequest2.getAge(),
+                employeeRequest2.getGender(),
+                employeeRequest2.getSalary(),
+                null));
+        employeeRepository.save(susan);
+
+        mockMvc.perform(get("/employees?gender={0}", "Female"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(bob.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(bob.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(bob.getAge()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(bob.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(bob.getSalary()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(alice.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(alice.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(alice.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(alice.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(alice.getSalary()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(susan.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(susan.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].age").value(susan.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].gender").value(susan.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].salary").value(susan.getSalary()));
     }
 
     @Test

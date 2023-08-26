@@ -27,9 +27,11 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
-    public Employee findById(Long id) {
-        return employeeRepository.findById(id)
+    public EmployeeResponse findById(Long id) {
+        Employee employee = employeeRepository.findById(id)
                 .orElseThrow(EmployeeNotFoundException::new);
+
+        return EmployeeMapper.toResponse(employee);
     }
 
     public void update(Long id, Employee employee) {
