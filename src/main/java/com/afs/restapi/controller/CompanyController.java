@@ -4,6 +4,7 @@ import com.afs.restapi.entity.Company;
 import com.afs.restapi.service.CompanyService;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.service.dto.CompanyRequest;
+import com.afs.restapi.service.dto.EmployeeResponse;
 import com.afs.restapi.service.mapper.CompanyResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +55,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}/employees")
-    public List<Employee> getEmployeesByCompanyId(@PathVariable Long id) {
+    public List<EmployeeResponse> getEmployeesByCompanyId(@PathVariable Long id) {
         return companyService.findEmployeesByCompanyId(id);
     }
 

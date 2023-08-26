@@ -6,8 +6,10 @@ import com.afs.restapi.exception.CompanyNotFoundException;
 import com.afs.restapi.repository.CompanyRepository;
 import com.afs.restapi.repository.EmployeeRepository;
 import com.afs.restapi.service.dto.CompanyRequest;
+import com.afs.restapi.service.dto.EmployeeResponse;
 import com.afs.restapi.service.mapper.CompanyMapper;
 import com.afs.restapi.service.mapper.CompanyResponse;
+import com.afs.restapi.service.mapper.EmployeeMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -56,8 +58,10 @@ public class CompanyService {
         return CompanyMapper.toResponse(companyRepository.save(company));
     }
 
-    public List<Employee> findEmployeesByCompanyId(Long id) {
-        return employeeRepository.findAllByCompanyId(id);
+    public List<EmployeeResponse> findEmployeesByCompanyId(Long id) {
+        return employeeRepository.findAllByCompanyId(id).stream()
+                .map(employee -> EmployeeMapper.toResponse(employee))
+                .collect(Collectors.toList());
     }
 
     public void delete(Long id) {

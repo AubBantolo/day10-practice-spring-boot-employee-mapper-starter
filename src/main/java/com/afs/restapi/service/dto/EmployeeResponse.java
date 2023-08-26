@@ -8,6 +8,8 @@ public class EmployeeResponse {
     private Integer age;
     private String gender;
 
+    private Integer salary;
+
     public EmployeeResponse(){
 
     }
@@ -41,5 +43,14 @@ public class EmployeeResponse {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getSalary() {
+        return salary;
+    }
+
+    public EmployeeResponse setSalary(Integer salary) {
+        this.salary = salary;
+        return this;
     }
 }
