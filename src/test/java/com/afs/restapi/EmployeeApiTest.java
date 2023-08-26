@@ -103,7 +103,7 @@ class EmployeeApiTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(employeeRequest.getName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(employeeRequest.getAge()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value(employeeRequest.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").doesNotExist());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(employeeRequest.getSalary()));
     }
 
     @Test
@@ -158,7 +158,6 @@ class EmployeeApiTest {
                 employeeRequest.getSalary(),
                 null));
         employeeRepository.save(alice);
-
 
         EmployeeRequest employeeRequest2 = new EmployeeRequest("Susan", 18, "Female", 2000, null);
         Employee susan = employeeRepository.save(new Employee(null,
