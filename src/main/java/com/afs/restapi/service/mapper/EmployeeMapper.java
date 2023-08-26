@@ -1,5 +1,6 @@
 package com.afs.restapi.service.mapper;
 
+import com.afs.restapi.entity.Company;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.service.dto.EmployeeRequest;
 import com.afs.restapi.service.dto.EmployeeResponse;
@@ -10,8 +11,10 @@ public class EmployeeMapper {
     public EmployeeMapper() {
     }
 
-    public static Employee toEntity(EmployeeRequest employeeRequest) {
-        Employee employee = new Employee();
+    public static Employee toEntity(Employee employee, EmployeeRequest employeeRequest) {
+        if (employee == null) {
+            employee = new Employee();
+        }
         BeanUtils.copyProperties(employeeRequest, employee);
         return employee;
     }
