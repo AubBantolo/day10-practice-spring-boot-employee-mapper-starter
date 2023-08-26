@@ -1,5 +1,9 @@
 package com.afs.restapi.service.mapper;
 
+import com.afs.restapi.entity.Employee;
+
+import java.util.List;
+
 public class CompanyResponse {
 
     private Long id;
@@ -7,6 +11,8 @@ public class CompanyResponse {
     private String name;
 
     private Integer employeesCount;
+
+    private List<Employee> employees;
     public CompanyResponse(){
 
     }
@@ -32,5 +38,14 @@ public class CompanyResponse {
 
     public void setEmployeesCount(Integer employeesCount) {
         this.employeesCount = employeesCount;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public CompanyResponse setEmployees(List<Employee> employees) {
+        this.employees = employees;
+        return this;
     }
 }

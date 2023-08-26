@@ -5,6 +5,7 @@ import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.CompanyRepository;
 import com.afs.restapi.repository.EmployeeRepository;
 import com.afs.restapi.service.dto.CompanyRequest;
+import com.afs.restapi.service.dto.EmployeeRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.notNullValue;
@@ -42,7 +44,8 @@ class CompanyApiTest {
     void should_find_companies() throws Exception {
 
         CompanyRequest companyRequest = new CompanyRequest("OOCL", null);
-        Company company = companyRepository.save(getCompanyOOCL());
+        Company company = companyRepository.save(new Company(null, companyRequest.getName()));
+        companyRepository.save(company);
 
         mockMvc.perform(get("/companies"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
@@ -53,19 +56,32 @@ class CompanyApiTest {
 
     @Test
     void should_find_company_by_id() throws Exception {
-        Company company = companyRepository.save(getCompanyOOCL());
-        Employee employee = employeeRepository.save(getEmployee(company));
+        //Company company = companyRepository.save(getCompanyOOCL());
+        //Employee employee = employeeRepository.save(getEmployee(company));
 
-        mockMvc.perform(get("/companies/{id}", company.getId()))
+        CompanyRequest companyRequest = new CompanyRequest("OOCL", null);
+        Company company = new Company(null, companyRequest.getName());
+        Company createdCompany = companyRepository.save(company);
+
+        // Create an employee and associate it with the company
+        EmployeeRequest employeeRequest = new EmployeeRequest("Alice", 18, "Female", 2000, createdCompany.getId());
+        Employee createdEmployee = employeeRepository.save(new Employee(null,
+                employeeRequest.getName(),
+                employeeRequest.getAge(),
+                employeeRequest.getGender(),
+                employeeRequest.getSalary(),
+                createdCompany.getId()));
+
+        mockMvc.perform(get("/companies/{id}", createdCompany.getId()))
                 .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(company.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(company.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(createdCompany.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(createdCompany.getName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees.length()").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].id").value(1L))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].name").value(employee.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].age").value(employee.getAge()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].gender").value(employee.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].salary").value(employee.getSalary()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].id").value(createdEmployee.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].name").value(createdEmployee.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].age").value(createdEmployee.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].gender").value(createdEmployee.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].salary").value(createdEmployee.getSalary()));
     }
 
     @Test
