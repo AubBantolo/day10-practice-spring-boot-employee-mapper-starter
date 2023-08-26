@@ -50,8 +50,10 @@ public class EmployeeService {
         return EmployeeMapper.toResponse(employeeRepository.save(toBeUpdatedEmployee));
     }
 
-    public List<Employee> findAllByGender(String gender) {
-        return employeeRepository.findAllByGender(gender);
+    public List<EmployeeResponse> findAllByGender(String gender) {
+        return employeeRepository.findAllByGender(gender).stream()
+                .map(employee -> EmployeeMapper.toResponse(employee))
+                .collect(Collectors.toList());
     }
 
     public EmployeeResponse create(EmployeeRequest employeeRequest) {
