@@ -104,7 +104,10 @@ class CompanyApiTest {
 
     @Test
     void should_delete_company_name() throws Exception {
-        Company company = companyRepository.save(getCompanyGoogle());
+        CompanyRequest companyRequest = new CompanyRequest("OOCL", null);
+        Company company = companyRepository.save(new Company(null, companyRequest.getName()));
+        companyRepository.save(company);
+
         mockMvc.perform(delete("/companies/{id}", company.getId()))
                 .andExpect(MockMvcResultMatchers.status().is(204));
 
