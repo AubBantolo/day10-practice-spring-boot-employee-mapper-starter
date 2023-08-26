@@ -1,9 +1,7 @@
 package com.afs.restapi.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Employee {
@@ -19,12 +17,13 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(Long id, String name, Integer age, String gender, Integer salary) {
+    public Employee(Long id, String name, Integer age, String gender, Integer salary, Long companyId) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.salary = salary;
+        this.companyId = companyId;
     }
 
     public void setId(Long id) {
@@ -73,5 +72,18 @@ public class Employee {
 
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(id, employee.id) && Objects.equals(name, employee.name) && Objects.equals(age, employee.age) && Objects.equals(gender, employee.gender) && Objects.equals(salary, employee.salary) && Objects.equals(companyId, employee.companyId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, age, gender, salary, companyId);
     }
 }
