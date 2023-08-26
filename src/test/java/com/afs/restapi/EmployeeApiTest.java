@@ -35,15 +35,25 @@ class EmployeeApiTest {
     }
     @Test
     void should_find_employees() throws Exception {
-        Employee bob = employeeRepository.save(getEmployeeBob());
+        //Employee bob = employeeRepository.save(getEmployeeBob());
+
+        EmployeeRequest employeeRequest = new EmployeeRequest("Alice", 18, "Female", 2000, null);
+        Employee employee = employeeRepository.save(new Employee(null,
+                employeeRequest.getName(),
+                employeeRequest.getAge(),
+                employeeRequest.getGender(),
+                employeeRequest.getSalary(),
+                null));
+        employeeRepository.save(employee);
+
         mockMvc.perform(get("/employees"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(bob.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(bob.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(bob.getAge()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(bob.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(bob.getSalary()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(employee.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(employee.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(employee.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(employee.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(employee.getSalary()));
     }
     @Test
     void should_find_employee_by_gender() throws Exception {
@@ -79,8 +89,8 @@ class EmployeeApiTest {
 
     @Test
     void should_update_employee_age_and_salary() throws Exception {
-        Employee previousEmployee = employeeRepository.save(new Employee(null,"Json", 22, "Male", 1000));
-        Employee employeeUpdateRequest = new Employee(previousEmployee.getId(), "lisi", 24, "Female", 2000);
+        Employee previousEmployee = employeeRepository.save(new Employee(null,"Json", 22, "Male", 1000, null));
+        Employee employeeUpdateRequest = new Employee(previousEmployee.getId(), "lisi", 24, "Female", 2000, null);
         ObjectMapper objectMapper = new ObjectMapper();
         String updatedEmployeeJson = objectMapper.writeValueAsString(employeeUpdateRequest);
         mockMvc.perform(put("/employees/{id}", previousEmployee.getId())
